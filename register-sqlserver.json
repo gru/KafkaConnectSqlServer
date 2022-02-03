@@ -9,10 +9,15 @@
       "database.password" : "Password!",
       "database.dbname" : "testDB",
       "database.server.name" : "sqlserver",
-      "transforms": "route",
+      "transforms": "route,filter",
       "transforms.route.type": "org.apache.kafka.connect.transforms.RegexRouter",
       "transforms.route.regex": "([^.]+)\\.([^.]+)\\.([^.]+)",
       "transforms.route.replacement": "$3",
+      "transforms.filter.type":"io.debezium.transforms.Filter",
+      "transforms.filter.language":"jsr223.groovy",
+      "transforms.filter.condition":"value.after.id != 1003",
+      "include.schema.changes": false,
+      "column.exclude.list": "dbo.customers.first_name",
       "database.history.kafka.bootstrap.servers" : "kafka:9092",
       "database.history.kafka.topic": "schema-changes.sqlserver"        
   }

@@ -1,7 +1,7 @@
 SQLSERVER_DRIVERS_TMP_DIR=sqljdbc
 KAFKA_LIBS_DIR=libs
 CONFLUENT_HUB_DIR=confluent-hub
-CONNECT_PLUGINS_DIR=$(pwd)/plugins
+CONNECT_PLUGINS_RELATIVE_DIR=plugins
 CONNECT_CONFIG=config/connect-distributed.properties
 DEBEZIUM_CONFIG=config/test-debezium-sqlserver-source.properties
 JDBC_CONFIG=config/test-jdbc-sink.properties
@@ -16,7 +16,8 @@ curl -L "http://client.hub.confluent.io/confluent-hub-client-latest.tar.gz" | ta
 
 export PATH=$CONFLUENT_HUB_DIR/bin:$PATH
 
-mkdir $CONNECT_PLUGINS_DIR
+mkdir $CONNECT_PLUGINS_RELATIVE_DIR
+CONNECT_PLUGINS_DIR=$(cd $CONNECT_PLUGINS_RELATIVE_DIR 2> /dev/null && pwd -P)
 yes | confluent-hub install confluentinc/kafka-connect-jdbc:10.3.1 --component-dir $CONNECT_PLUGINS_DIR --worker-configs $CONNECT_CONFIG
 yes | confluent-hub install debezium/debezium-connector-sqlserver:1.7.1 --component-dir $CONNECT_PLUGINS_DIR --worker-configs $CONNECT_CONFIG
 
